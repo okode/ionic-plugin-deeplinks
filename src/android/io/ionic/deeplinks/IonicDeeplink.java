@@ -10,37 +10,29 @@
  */
 package io.ionic.deeplinks;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
-import org.apache.cordova.PluginResult.Status;
-import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.util.Date;
-import java.util.TimeZone;
-
-import android.util.Log;
-import android.content.Intent;
-import android.content.Context;
-import android.graphics.Rect;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.inputmethod.InputMethodManager;
-import android.telephony.TelephonyManager;
-import android.net.Uri;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.provider.Settings;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 
 public class IonicDeeplink extends CordovaPlugin {
   private static final String TAG = "IonicDeeplinkPlugin";
