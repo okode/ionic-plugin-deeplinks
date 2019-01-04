@@ -8,7 +8,7 @@
  * https://github.com/EddyVerbruggen/Custom-URL-scheme
  * https://github.com/nordnet/cordova-universal-links-plugin
  */
-package io.ionic.links;
+package io.ionic.deeplinks;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
