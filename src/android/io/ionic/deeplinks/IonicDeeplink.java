@@ -10,6 +10,7 @@
  */
 package io.ionic.deeplinks;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,12 +59,29 @@ public class IonicDeeplink extends CordovaPlugin {
 
     // read intent
     String action = intent.getAction();
-    Uri url = intent.getData();
+
+    // read url
+    Uri url = null;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+      // Extract the Uri from the intent's clip data
+      url = this.getUrlFromClipData(intent.getClipData());
+    }
+    if (url == null) {
+      // Extract the Uri from the intent's extra stream
+      // See Intent.EXTRA_STREAM for details
+      url = this.getUrlFromExtras(intent.getExtras());
+    }
+    if (url == null) {
+      // Extract the Uri from the intent's getData
+      // See Intent.ACTION_VIEW for details
+      url = intent.getData();
+    }
+
     JSONObject bundleData = this._bundleToJson(intent.getExtras());
     Log.d(TAG, "Got a new intent: " + intentString + " " + intent.getScheme() + " " + action + " " + url);
 
     // if app was not launched by the url - ignore
-    if (!Intent.ACTION_VIEW.equals(action) || url == null) {
+    if (url == null) {
       return;
     }
 
@@ -252,5 +270,13 @@ public class IonicDeeplink extends CordovaPlugin {
       platform = "android";
     }
     return platform;
+  }
+
+  private Uri getUrlFromClipData(final ClipData clipData) {
+    return clipData != null && clipData.getItemCount() >= 1 ? clipData.getItemAt(0).getUri() : null;
+  }
+
+  private Uri getUrlFromExtras(final Bundle extras) {
+    return extras != null ? ((Uri) extras.get(Intent.EXTRA_STREAM)) : null;
   }
 }
